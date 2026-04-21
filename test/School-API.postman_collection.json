@@ -1,0 +1,160 @@
+{
+	"info": {
+		"_postman_id": "school-api",
+		"name": "School Management API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Add School",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Springfield High\",\n    \"address\": \"123 Main St, Springfield\",\n    \"latitude\": 40.7128,\n    \"longitude\": -74.0060\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/schools/addSchool",
+					"host": ["{{baseUrl}}"],
+					"path": ["api", "schools", "addSchool"]
+				},
+				"description": "Add a new school to the database"
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Springfield High\",\n    \"address\": \"123 Main St, Springfield\",\n    \"latitude\": 40.7128,\n    \"longitude\": -74.0060\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/schools/addSchool",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "schools", "addSchool"]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": null,
+					"body": "{\n    \"success\": true,\n    \"message\": \"School added\",\n    \"data\": {\n        \"id\": 1,\n        \"name\": \"Springfield High\",\n        \"address\": \"123 Main St, Springfield\",\n        \"latitude\": 40.7128,\n        \"longitude\": -74.006\n    }\n}"
+				},
+				{
+					"name": "Validation Error",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"\",\n    \"address\": \"123 Main St\",\n    \"latitude\": 200,\n    \"longitude\": -74.0060\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/schools/addSchool",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "schools", "addSchool"]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": null,
+					"body": "{\n    \"success\": false,\n    \"errors\": [\n        {\n            \"type\": \"field\",\n            \"msg\": \"Name is required\",\n            \"path\": \"name\",\n            \"location\": \"body\"\n        },\n        {\n            \"type\": \"field\",\n            \"msg\": \"Latitude must be between -90 and 90\",\n            \"path\": \"latitude\",\n            \"location\": \"body\"\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "List Schools",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/schools/listSchools?latitude=40.7128&longitude=-74.006",
+					"host": ["{{baseUrl}}"],
+					"path": ["api", "schools", "listSchools"],
+					"query": [
+						{
+							"key": "latitude",
+							"value": "40.7128"
+						},
+						{
+							"key": "longitude",
+							"value": "-74.006"
+						}
+					]
+				},
+				"description": "List all schools sorted by distance from given coordinates"
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/schools/listSchools?latitude=40.7128&longitude=-74.006",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "schools", "listSchools"],
+							"query": [
+								{
+									"key": "latitude",
+									"value": "40.7128"
+								},
+								{
+									"key": "longitude",
+									"value": "-74.006"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": null,
+					"body": "{\n    \"success\": true,\n    \"data\": [\n        {\n            \"id\": 2,\n            \"name\": \"Downtown Academy\",\n            \"address\": \"456 Oak Ave\",\n            \"latitude\": 40.7580,\n            \"longitude\": -73.9855,\n            \"distance\": 5.23\n        },\n        {\n            \"id\": 1,\n            \"name\": \"Springfield High\",\n            \"address\": \"123 Main St, Springfield\",\n            \"latitude\": 40.7128,\n            \"longitude\": -74.006,\n            \"distance\": 0.42\n        }\n    ]\n}"
+				},
+				{
+					"name": "Validation Error",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/schools/listSchools?latitude=abc&longitude=-74.006",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "schools", "listSchools"],
+							"query": [
+								{
+									"key": "latitude",
+									"value": "abc"
+								},
+								{
+									"key": "longitude",
+									"value": "-74.006"
+								}
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": null,
+					"body": "{\n    \"success\": false,\n    \"errors\": [\n        {\n            \"type\": \"field\",\n            \"msg\": \"Latitude must be between -90 and 90\",\n            \"path\": \"latitude\",\n            \"location\": \"query\"\n        }\n    ]\n}"
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:3000"
+		}
+	]
+}
