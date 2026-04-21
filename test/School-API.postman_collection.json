@@ -154,7 +154,7 @@
 	"variable": [
 		{
 			"key": "baseUrl",
-			"value": "http://localhost:3000"
+			"value": "educase-assignment-production.up.railway.app"
 		}
 	]
 }
